@@ -3,7 +3,7 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-name: expense app push to ECR.
+name: expense vue app push to ECR.
 jobs:
   deploy:
     name: Deploy
