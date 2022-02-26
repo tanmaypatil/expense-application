@@ -1,40 +1,53 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+    <el-row class="mb-4">
+      <el-col :span="8">
+        <el-input v-model="input" placeholder="Please input celsius temp" />
+      </el-col>
+    </el-row>
+
+    <el-row class="mb-4">
+      <el-button v-on:click="convert" id="convert" type="primary">Convert to fahrenheit</el-button>
+    </el-row>
+    <el-row class="mb-4">
+      <el-col :span="8">
+        <el-input v-model="output" disabled />
+      </el-col>
+    </el-row>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
 export default {
   name: 'HelloWorld',
   props: {
     msg: String
+  },
+  data() {
+    return {
+      input: 0,
+      name: 'HelloWorld',
+      output : 0
+    }
+  },
+  methods: {
+    convert() {
+      console.log(`Hello ${this.name}!`);
+      console.log(this.input);
+      console.log('backend url' + process.env.VUE_APP_API_URL);
+      let url = process.env.VUE_APP_API_URL;
+      let obj = { celsius : this.input };
+      axios( { method : 'post' ,
+       headers: { 'Content-Type': 'application/json'  }, 
+  
+      url : url, data : obj})
+    .then(response => {console.log(JSON.stringify(response)) ;
+                      this.output = response.data.farenheit })
+      //this.output = this.input * 1.8 + 32
+      //console.log(this.output);
+    }
   }
 }
 </script>
