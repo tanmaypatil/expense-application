@@ -1,14 +1,14 @@
 <template>
-  <HelloWorld msg="Welcome to Expense App"/>
+  <Expense />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Expense from './components/Expense.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    Expense
   }
 }
 </script>
