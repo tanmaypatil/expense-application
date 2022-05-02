@@ -22,10 +22,9 @@ const router = VueRouter.createRouter({
 
 const app = createApp(App);
 app.use(router);
-let gauthClientId = "134846002808-69rh5m5evq66g097h4fqg9jbvkk1igqh.apps.googleusercontent.com";
-//let gauthClientId = "707231563844-e5cpkqrlt62gncmj6b84of5sml9lp8g9.apps.googleusercontent.com";
+let gauthClientId = process.env.VUE_APP_GAUTH_ID;
+console.log('gauthClientId : '+process.env.VUE_APP_GAUTH_ID);
 app.use(gAuthPlugin, { clientId: gauthClientId, scope: 'email', prompt: 'consent', fetch_basic_profile: false })
-
 
 app.use(ElementPlus);
 app.mount('#app');
