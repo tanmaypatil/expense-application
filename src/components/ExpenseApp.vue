@@ -67,6 +67,9 @@ export default {
       ],
   }},
   methods: {
+    mounted() {
+      console.log('inside ExpenseApp');
+    },
     onSubmit() {
       console.log("doSubmit" + JSON.stringify(this.form));
       ElMessage('expense submitted');

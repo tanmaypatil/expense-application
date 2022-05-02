@@ -1,71 +1,129 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <el-row class="mb-4">
-      <el-col :span="8">
-        <el-input v-model="input" placeholder="Please input celsius temp" />
-      </el-col>
-    </el-row>
-
-    <el-row class="mb-4">
-      <el-button v-on:click="convert" id="convert" type="primary">Convert to fahrenheit</el-button>
-    </el-row>
-    <el-row class="mb-4">
-      <el-col :span="8">
-        <el-input v-model="output" disabled />
-      </el-col>
-    </el-row>
-  </div>
+<div>
+  <h1>IsInit: {{ Vue3GoogleOauth.isInit }}</h1>
+  <h1>IsAuthorized: {{ Vue3GoogleOauth.isAuthorized }}</h1>
+  <h2 v-if="user">signed user: {{user}}</h2>
+  <button @click="handleClickSignIn" :disabled="!Vue3GoogleOauth.isInit || Vue3GoogleOauth.isAuthorized">sign in</button>
+  <button @click="handleClickGetAuthCode" :disabled="!Vue3GoogleOauth.isInit">get authCode</button>
+  <button @click="handleClickSignOut" :disabled="!Vue3GoogleOauth.isAuthorized">sign out</button>
+  <button @click="handleClickDisconnect" :disabled="!Vue3GoogleOauth.isAuthorized">disconnect</button>
+</div>
 </template>
 
 <script>
-import axios from 'axios';
+import { inject, toRefs } from "vue";
+import {  onUpdated } from 'vue'
+
 export default {
-  name: 'HelloWorld',
+  name: "HelloWorld",
   props: {
-    msg: String
+    msg: String,
   },
-  data() {
+
+  data(){
     return {
-      input: 0,
-      name: 'HelloWorld',
-      output : 0
+      user: '',
     }
   },
+
   methods: {
-    convert() {
-      console.log(`Hello ${this.name}!`);
-      console.log(this.input);
-      console.log('backend url' + process.env.VUE_APP_API_URL);
-      let url = process.env.VUE_APP_API_URL;
-      let obj = { celsius : this.input };
-      axios( { method : 'post' ,
-       headers: { 'Content-Type': 'application/json'  }, 
-  
-      url : url, data : obj})
-    .then(response => {console.log(JSON.stringify(response)) ;
-                      this.output = response.data.farenheit })
-      //this.output = this.input * 1.8 + 32
-      //console.log(this.output);
-    }
-  }
-}
+    async handleClickSignIn(){
+      try {
+        const googleUser = await this.$gAuth.signIn();
+        if (!googleUser) {
+          return null;
+        }
+        console.log("googleUser", googleUser);
+        this.user = googleUser.getBasicProfile().getEmail();
+        console.log("getId", this.user);
+        console.log("getBasicProfile", googleUser.getBasicProfile());
+        console.log("getAuthResponse", googleUser.getAuthResponse());
+        console.log(
+          "getAuthResponse",
+          this.$gAuth.instance.currentUser.get().getAuthResponse()
+        );
+        console.log('move to expense page');
+        this.$router.push('/expense');
+
+      } catch (error) {
+        //on fail do something
+        console.error(error);
+        return null;
+      }
+    },
+
+    async handleClickGetAuthCode(){
+      try {
+        const authCode = await this.$gAuth.getAuthCode();
+        console.log("authCode", authCode);
+      } catch(error) {
+        //on fail do something
+        console.error(error);
+        return null;
+      }
+    },
+
+    async handleClickSignOut() {
+      try {
+        await this.$gAuth.signOut();
+        console.log("isAuthorized", this.Vue3GoogleOauth.isAuthorized);
+        this.user = "";
+      } catch (error) {
+        console.error(error);
+      }
+    },
+
+    handleClickDisconnect() {
+      window.location.href = `https://www.google.com/accounts/Logout?continue=https://appengine.google.com/_ah/logout?continue=${window.location.href}`;
+    },
+    
+  },
+  setup(props) {
+    const { isSignIn } = toRefs(props);
+    const Vue3GoogleOauth = inject("Vue3GoogleOauth");
+
+    const handleClickLogin = () => {};
+    onUpdated(() => {
+  // text content should be the same as current `count.value`
+  console.log('updated hook called');
+   
+});
+    return {
+      Vue3GoogleOauth,
+      handleClickLogin,
+      isSignIn,
+    };
+  },
+};
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
+<style>
+button {
   display: inline-block;
-  margin: 0 10px;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  background: #fff;
+  border: 1px solid #dcdfe6;
+  color: #606266;
+  -webkit-appearance: none;
+  text-align: center;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  outline: 0;
+  margin: 0;
+  -webkit-transition: 0.1s;
+  transition: 0.1s;
+  font-weight: 500;
+  padding: 12px 20px;
+  font-size: 14px;
+  border-radius: 4px;
+  margin-right: 1em;
 }
-a {
-  color: #42b983;
+
+button:disabled {
+  background: #fff;
+  color: #ddd;
+  cursor: not-allowed;
 }
 </style>

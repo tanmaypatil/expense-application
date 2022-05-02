@@ -1,14 +1,12 @@
 <template>
-  <Expense />
+  <img alt="Vue logo" src="./assets/logo.png" />
+   <router-view />
 </template>
-
 <script>
-import Expense from './components/Expense.vue'
 
 export default {
   name: 'App',
-  components: {
-    Expense
+  components: {  
   }
 }
 </script>
