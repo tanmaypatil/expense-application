@@ -3,9 +3,9 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
-import '@/assets/css/style.css'
+
 import gAuthPlugin from './plugins/vue3-google-oauth2';
-import HelloWorld from './components/HelloWorld.vue'
+import HelloWorld from './components/LoginApp.vue'
 import ExpenseApp from "./components/ExpenseApp.vue"
 import * as VueRouter from 'vue-router'
 
