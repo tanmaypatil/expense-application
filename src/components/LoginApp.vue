@@ -3,9 +3,8 @@
   <h1>Expense application</h1>
   <h2 v-if="user">signed user: {{user}}</h2>
   <el-form>
-  <el-button type="primary" @click="handleClickSignIn" :disabled="!Vue3GoogleOauth.isInit || Vue3GoogleOauth.isAuthorized">sign in</el-button>
-  <el-button @click="handleClickGetAuthCode" :disabled="!Vue3GoogleOauth.isInit">get authCode</el-button>
-  <el-button @click="handleClickSignOut" :disabled="!Vue3GoogleOauth.isAuthorized">sign out</el-button>
+  <el-button type="primary" @click="handleClickSignIn" :disabled="!Vue3GoogleOauth.isInit || Vue3GoogleOauth.isAuthorized">sign in using google</el-button>
+  <el-button type="info" @click="handleClickSignOut" :disabled="!Vue3GoogleOauth.isAuthorized">sign out</el-button>
   <el-button @click="handleClickDisconnect" :disabled="!Vue3GoogleOauth.isAuthorized" round>disconnect</el-button>
   </el-form>
 
