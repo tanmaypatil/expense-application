@@ -1,5 +1,5 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
+  <img alt="Expense logo" src="./assets/expense_2.png" />
    <router-view />
 </template>
 <script>

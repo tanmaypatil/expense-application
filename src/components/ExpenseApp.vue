@@ -18,6 +18,9 @@
     </el-form-item>
     <el-form-item label="Expense amount">
     <el-input-number v-model="form.num" :min="1" :max="1000"  />
+      <el-col :span="4" class="text-center">
+        <span class="text-gray-500">  INR </span>
+      </el-col>
     </el-form-item>
     <el-form-item label="Expense details">
       <el-input v-model="form.desc" type="textarea" />
